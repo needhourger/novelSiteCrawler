@@ -6,7 +6,13 @@
 import scrapy
 
 
-class CrawlersItem(scrapy.Item):
+class BookItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    bname = scrapy.Field()
+    author = scrapy.Field()
+    btype = scrapy.Field()
+    url = scrapy.Field()
+    lastUpdate = scrapy.Field()
+    total_chapters = scrapy.Field()
+
