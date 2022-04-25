@@ -30,7 +30,7 @@ class XbiqugeSoSpider(scrapy.Spider):
                 for i in range(1, page_count+1)]
         for url in urls:
             yield Request(url=url, callback=self.parse_page)
-            break
+            # break
 
     def parse_page(self, r: Response):
         lis = r.xpath(
@@ -57,7 +57,7 @@ class XbiqugeSoSpider(scrapy.Spider):
         chapter_urls = r.xpath('//*[@id="list"]/dl/dd/a/@href').extract()
         chapter_urls = set(chapter_urls)
         item['total_chapters'] = len(chapter_urls)
-        yield item
+        # yield item
 
         save_dir = os.path.join(
             self.spider_data_path, item['btype'], "{}-{}".format(item['author'], item['bname']))
@@ -71,14 +71,13 @@ class XbiqugeSoSpider(scrapy.Spider):
         for i,chapter_url in enumerate(target_chapters):
             url = r.url+chapter_url
             chapter_id = chapter_url.replace(".html", "")
+            logging.info("[{}/{}] - {}".format(i+1,len(target_chapters),save_dir))
             yield Request(url=url, callback=self.parse_chapter, 
-                meta={"item": item, "cid": chapter_id,"current":i,"total":len(target_chapters)})
+                meta={"item": item, "cid": chapter_id})
 
     def parse_chapter(self, r: Response):
         item = r.meta.get("item")
         chapter_id = r.meta.get("cid")
-        current = r.meta.get("current")
-        total = r.meta.get("total")
         title = r.xpath(
             '//*[@id="box_con"]/div[@class="bookname"]/h1/text()').extract()
         if (not title):
@@ -101,4 +100,4 @@ class XbiqugeSoSpider(scrapy.Spider):
             f.writelines(lines)
             f.write("\n\n")
             f.close()
-            logging.info("Saved chapter[{}/{}]: {}".format(current+1,total,save_path))
+            logging.info("Saved chapter: {}".format(save_path))
