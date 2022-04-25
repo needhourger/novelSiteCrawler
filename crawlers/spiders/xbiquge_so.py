@@ -1,6 +1,7 @@
 import os
 import scrapy
 import logging
+import progressbar
 from scrapy import Request
 from scrapy.http import Response
 
@@ -12,7 +13,7 @@ class XbiqugeSoSpider(scrapy.Spider):
     name = 'xbiquge_so'
     allowed_domains = ['xbiquge.so']
     url_base = "https://www.xbiquge.so/top/allvisit/"
-    spider_data_path = os.path.join(DATA_PATH,name)
+    spider_data_path = os.path.join(DATA_PATH, name)
 
     def start_requests(self):
         yield Request(url=self.url_base, callback=self.parse_first)
@@ -63,22 +64,33 @@ class XbiqugeSoSpider(scrapy.Spider):
             self.spider_data_path, item['btype'], "{}-{}".format(item['author'], item['bname']))
         download_chapters = set()
         if os.path.exists(save_dir):
-            for _,_,files in os.walk(save_dir):
-                ids = [f.replace(".txt",".html") for f in files]
+            for _, _, files in os.walk(save_dir):
+                ids = [f.replace(".txt", ".html") for f in files]
                 download_chapters.update(ids)
-        
-        target_chapters=chapter_urls-download_chapters
+
+        target_chapters = chapter_urls-download_chapters
         item["download_chapters"] = 0
+
+        bar = progressbar.ProgressBar(
+            max_value=len(target_chapters), widgets=[
+                "[{}-{}]".format(item["bname"],item["author"]),
+                progressbar.Percentage(),
+                progressbar.Bar(),
+                progressbar.Counter(format=' [Chapters:%(value)d/%(max_value)d]')
+            ],left_justify=True).start()
+
         for chapter_url in target_chapters:
             url = r.url+chapter_url
             chapter_id = chapter_url.replace(".html", "")
-            yield Request(url=url, callback=self.parse_chapter, 
-                meta={"item": item, "cid": chapter_id,"total":len(target_chapters)})
+
+            yield Request(url=url, callback=self.parse_chapter,
+                          meta={"item": item, "cid": chapter_id, "total": len(target_chapters), "bar": bar})
 
     def parse_chapter(self, r: Response):
         item = r.meta.get("item")
         chapter_id = r.meta.get("cid")
         total = r.meta.get("total")
+        bar = r.meta.get("bar")
         title = r.xpath(
             '//*[@id="box_con"]/div[@class="bookname"]/h1/text()').extract()
         if (not title):
@@ -102,4 +114,6 @@ class XbiqugeSoSpider(scrapy.Spider):
             f.write("\n\n")
             f.close()
             item["download_chapters"] = item["download_chapters"] + 1
-            logging.info("Saved chapter[{}/{}]: {}".format(item["download_chapters"],total,save_path))
+            logging.info(
+                "Saved chapter[{}/{}]: {}".format(item["download_chapters"], total, save_path))
+            bar.update(item["download_chapters"])

@@ -1,3 +1,4 @@
+import time
 # Scrapy settings for crawlers project
 #
 # For simplicity, this file contains only settings considered important or
@@ -87,5 +88,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+LOG_FILE = "./{}.log".format(time.time())
 
 DATA_PATH = "./data"
