@@ -1,13 +1,12 @@
 import os
 import scrapy
 import logging
-import progressbar
 from scrapy import Request
 from scrapy.http import Response
 
 from crawlers.items import BookItem
 from crawlers.settings import DATA_PATH
-
+from progress import getProgressBar
 
 class XbiqugeSoSpider(scrapy.Spider):
     name = 'xbiquge_so'
@@ -71,14 +70,8 @@ class XbiqugeSoSpider(scrapy.Spider):
         target_chapters = chapter_urls-download_chapters
         item["download_chapters"] = 0
 
-        bar = progressbar.ProgressBar(
-            max_value=len(target_chapters), widgets=[
-                "[{}-{}]".format(item["bname"],item["author"]),
-                progressbar.Percentage(),
-                progressbar.Bar(),
-                progressbar.Counter(format=' [Chapters:%(value)d/%(max_value)d]')
-            ],left_justify=True).start()
-
+        bar = getProgressBar(len(target_chapters), item['bname'],item['author'])
+        bar.start()
         for chapter_url in target_chapters:
             url = r.url+chapter_url
             chapter_id = chapter_url.replace(".html", "")
@@ -117,3 +110,4 @@ class XbiqugeSoSpider(scrapy.Spider):
             logging.info(
                 "Saved chapter[{}/{}]: {}".format(item["download_chapters"], total, save_path))
             bar.update(item["download_chapters"])
+            
