@@ -15,4 +15,5 @@ class BookItem(scrapy.Item):
     url = scrapy.Field()
     lastUpdate = scrapy.Field()
     total_chapters = scrapy.Field()
+    download_chapters = scrapy.Field()
 
