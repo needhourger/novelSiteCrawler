@@ -30,7 +30,7 @@ class XbiqugeSoSpider(scrapy.Spider):
                 for i in range(1, page_count+1)]
         for url in urls:
             yield Request(url=url, callback=self.parse_page)
-            # break
+            break
 
     def parse_page(self, r: Response):
         lis = r.xpath(
@@ -94,7 +94,7 @@ class XbiqugeSoSpider(scrapy.Spider):
 
         lines = r.xpath('//*[@id="content"]/text()').extract()
         lines.pop(0)
-        lines = [line+"\n" for line in lines]
+        lines = [line.strip(" ")+"\n" for line in lines]
 
         with open(save_path, "w", encoding="utf-8") as f:
             f.write(title+"\n")
