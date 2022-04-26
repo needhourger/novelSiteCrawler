@@ -16,8 +16,8 @@ class XbiqugeSoSpider(scrapy.Spider):
 
     def __init__(self,start=1,end=1,*args,**kwargs):
         super(XbiqugeSoSpider, self).__init__(*args,**kwargs)
-        self.pstart = start
-        self.pend = end
+        self.pstart = int(start)
+        self.pend = int(end)
 
     def start_requests(self):
         yield Request(url=self.url_base, callback=self.parse_first)
