@@ -1,3 +1,4 @@
+import os
 import time
 # Scrapy settings for crawlers project
 #
@@ -89,6 +90,9 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-LOG_FILE = "./{}.log".format(time.time())
+LOG_PATH = "./log"
+if not os.path.exists(LOG_PATH):
+   os.makedirs(LOG_PATH)
+LOG_FILE = os.path.join(LOG_PATH,"./{}.log".format(time.time()))
 
 DATA_PATH = "./data"
