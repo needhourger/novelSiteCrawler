@@ -14,6 +14,11 @@ class XbiqugeSoSpider(scrapy.Spider):
     url_base = "https://www.xbiquge.so/top/allvisit/"
     spider_data_path = os.path.join(DATA_PATH, name)
 
+    def __init__(self,start=1,end=1,*args,**kwargs):
+        super(XbiqugeSoSpider, self).__init__(*args,**kwargs)
+        self.pstart = start
+        self.pend = end
+
     def start_requests(self):
         yield Request(url=self.url_base, callback=self.parse_first)
 
@@ -24,10 +29,10 @@ class XbiqugeSoSpider(scrapy.Spider):
             logging.warning("No page count get")
             return
         page_count = int(page_count[0])
-        logging.info("Get total page count: {}".format(page_count))
+        logging.info("Get total page count: {} download from {} to {}".format(page_count,self.pstart,self.pend))
 
         urls = [self.url_base+"{}.html".format(i)
-                for i in range(1, page_count+1)]
+                for i in range(self.pstart, self.pend+1)]
         for url in urls:
             yield Request(url=url, callback=self.parse_page)
             # break
