@@ -39,7 +39,7 @@ class XbiqugeSoSpider(scrapy.Spider):
                 for i in range(self.pstart, self.pend+1)]
         for url in urls:
             yield Request(url=url, callback=self.parse_page)
-            #break
+            # break
 
     def parse_page(self, r: Response):
         lis = r.xpath(
@@ -60,7 +60,7 @@ class XbiqugeSoSpider(scrapy.Spider):
             logging.info(
                 "Download book: {} - {} - {}".format(bname, author, lastUpdate))
             yield Request(url=url, callback=self.parse_book, meta={"item": item})
-            #break
+            # break
 
     def parse_book(self, r: Response):
         item = r.meta.get("item")
@@ -74,10 +74,11 @@ class XbiqugeSoSpider(scrapy.Spider):
         if os.path.exists(save_dir):
             for _, _, files in os.walk(save_dir):
                 ids = [f.replace("txt", "html") for f in files]
-                download_chapters.update(ids)        
+                download_chapters.update(ids)
         target_chapters = chapter_urls-download_chapters
         item["download_chapters"] = len(download_chapters)
-        logging.info("total:{} downloaded:{} target:{}".format(len(chapter_urls),len(download_chapters),len(target_chapters)))
+        logging.info("total:{} downloaded:{} target:{}".format(
+            len(chapter_urls), len(download_chapters), len(target_chapters)))
         # return
 
         if not DB.needUpdateBook(item):

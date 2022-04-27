@@ -39,34 +39,34 @@ COOKIES_ENABLED = False
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
+# DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
-#}
+# }
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'crawlers.middlewares.CrawlersSpiderMiddleware': 543,
-#}
+# }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-#    'crawlers.middlewares.CrawlersDownloaderMiddleware': 543,
-   'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
+    #    'crawlers.middlewares.CrawlersDownloaderMiddleware': 543,
+    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
 }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
+# EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
-#}
+# }
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'crawlers.pipelines.CrawlersPipeline': 300,
+    'crawlers.pipelines.CrawlersPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -94,12 +94,13 @@ ITEM_PIPELINES = {
 DEBUG = False
 LOG_PATH = "./log"
 if not os.path.exists(LOG_PATH):
-   os.makedirs(LOG_PATH)
+    os.makedirs(LOG_PATH)
 
-LOG_FILE = os.path.join(LOG_PATH,"./{}.log".format(time.time())) if not DEBUG else None
+LOG_FILE = os.path.join(
+    LOG_PATH, "./{}.log".format(time.time())) if not DEBUG else None
 
 DATA_PATH = "./data"
 if not os.path.exists(DATA_PATH):
-   os.makedirs(DATA_PATH)
+    os.makedirs(DATA_PATH)
 
 OUTPUT_PATH = "./output"

@@ -8,11 +8,15 @@
 from itemadapter import ItemAdapter
 from database import DB
 
+
 class CrawlersPipeline:
-    
-    def __init__(self):
+
+    def open_spider(self, spider):
         DB.init()
 
     def process_item(self, item, spider):
         DB.insert(item)
         return item
+
+    def close_spider(self, spider):
+        DB.close()
