@@ -9,6 +9,7 @@ import scrapy
 class BookItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    bid = scrapy.Field()
     bname = scrapy.Field()
     author = scrapy.Field()
     btype = scrapy.Field()

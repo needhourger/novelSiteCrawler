@@ -90,9 +90,16 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+# Own Configuration
+DEBUG = True
 LOG_PATH = "./log"
 if not os.path.exists(LOG_PATH):
    os.makedirs(LOG_PATH)
-LOG_FILE = os.path.join(LOG_PATH,"./{}.log".format(time.time()))
+
+LOG_FILE = os.path.join(LOG_PATH,"./{}.log".format(time.time())) if not DEBUG else None
 
 DATA_PATH = "./data"
+if not os.path.exists(DATA_PATH):
+   os.makedirs(DATA_PATH)
+
+OUTPUT_PATH = "./output"

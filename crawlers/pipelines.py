@@ -6,8 +6,13 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-
+from database import DB
 
 class CrawlersPipeline:
+    
+    def __init__(self):
+        DB.init()
+
     def process_item(self, item, spider):
+        DB.insert(item)
         return item
