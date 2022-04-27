@@ -27,7 +27,7 @@ CONCURRENT_REQUESTS = 64
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0
+DOWNLOAD_DELAY = 0.01
 # The download delay setting will honor only one of:
 CONCURRENT_REQUESTS_PER_DOMAIN = 64
 CONCURRENT_REQUESTS_PER_IP = 64
@@ -91,7 +91,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # Own Configuration
-DEBUG = True
+DEBUG = False
 LOG_PATH = "./log"
 if not os.path.exists(LOG_PATH):
    os.makedirs(LOG_PATH)

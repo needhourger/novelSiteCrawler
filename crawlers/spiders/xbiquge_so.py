@@ -39,7 +39,7 @@ class XbiqugeSoSpider(scrapy.Spider):
                 for i in range(self.pstart, self.pend+1)]
         for url in urls:
             yield Request(url=url, callback=self.parse_page)
-            break
+            #break
 
     def parse_page(self, r: Response):
         lis = r.xpath(
@@ -60,7 +60,7 @@ class XbiqugeSoSpider(scrapy.Spider):
             logging.info(
                 "Download book: {} - {} - {}".format(bname, author, lastUpdate))
             yield Request(url=url, callback=self.parse_book, meta={"item": item})
-            break
+            #break
 
     def parse_book(self, r: Response):
         item = r.meta.get("item")
