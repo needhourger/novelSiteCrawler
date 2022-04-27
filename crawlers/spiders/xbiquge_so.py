@@ -85,7 +85,7 @@ class XbiqugeSoSpider(scrapy.Spider):
                 item['bid'], item['bname']))
             return
 
-        bar = Progress(len(target_chapters), item['bname'], item['author'])
+        bar = Progress(item['total_chapters'], item['bname'], item['author'])
         bar.start()
         for chapter_url in target_chapters:
             url = r.url+chapter_url

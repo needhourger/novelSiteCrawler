@@ -47,10 +47,9 @@ class Progress:
     # ACCESSOR FUNCTIONS
     def get_width(self,o):
         """Return the screen column width for unicode ordinal o."""
-        global widths
         if o == 0xe or o == 0xf:
             return 0
-        for num, wid in widths:
+        for num, wid in self.__widths:
             if o <= num:
                 return wid
         return 1
@@ -58,7 +57,7 @@ class Progress:
     def custom_len(self,value):
         total = 0
         for c in value:
-            total += get_width(ord(c))
+            total += self.get_width(ord(c))
         return total
 
 
