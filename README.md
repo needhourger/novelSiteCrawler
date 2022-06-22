@@ -24,4 +24,3 @@
 
     Result will be stored in /output and /data directory.
 
-
