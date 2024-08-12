@@ -1,4 +1,4 @@
-# novelCrawler
+# novelSiteCrawler
 
 ## Usage
 ### Environment
